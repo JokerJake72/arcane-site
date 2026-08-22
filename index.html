@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arcane SMP — mc.arcanesmp.net</title>
-<meta name="description" content="Arcane SMP — a survival Minecraft world with occasional events. Join at mc.arcanesmp.net.">
+<title>Arcane SMP — mc.arcanesmp.com</title>
+<meta name="description" content="Arcane SMP — a survival Minecraft world with occasional events. Join at mc.arcanesmp.com.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -57,7 +57,6 @@
 
   .wrap{ max-width: 1120px; margin: 0 auto; padding: 0 28px; }
 
-  /* ---------- Ambient background ---------- */
   .sigil-field{
     position: fixed;
     inset: 0;
@@ -82,7 +81,6 @@
     100%{ transform: translateY(-110vh) scale(1.1); opacity: 0; }
   }
 
-  /* ---------- Nav ---------- */
   header{
     position: sticky;
     top: 0;
@@ -173,7 +171,6 @@
     .nav-links{ display: flex; }
   }
 
-  /* mobile menu */
   .menu-btn{
     display: inline-flex;
     background: none;
@@ -183,7 +180,6 @@
   }
   @media (min-width: 760px){ .menu-btn{ display: none; } }
 
-  /* ---------- Section shell ---------- */
   section{
     position: relative;
     z-index: 1;
@@ -215,7 +211,6 @@
     letter-spacing: 0.01em;
   }
 
-  /* ---------- Hero ---------- */
   .hero{
     padding-top: 150px;
     padding-bottom: 90px;
@@ -297,7 +292,6 @@
   }
   .btn-ghost:hover{ border-color: var(--panel-border-hover); }
 
-  /* ---------- Glass panel ---------- */
   .glass{
     background: var(--panel);
     border: 1px solid var(--panel-border);
@@ -311,7 +305,6 @@
     box-shadow: 0 12px 40px rgba(20,10,40,0.4);
   }
 
-  /* ---------- Join section ---------- */
   .join-card{
     max-width: 640px;
     margin: 0 auto;
@@ -393,7 +386,6 @@
     color: var(--text-dim);
   }
 
-  /* ---------- Grid sections (shop/discord/staff headers) ---------- */
   .section-head{
     text-align: center;
     max-width: 560px;
@@ -409,7 +401,6 @@
     font-size: 15px;
   }
 
-  /* ---------- Shop ---------- */
   .shop-card{
     max-width: 480px;
     margin: 0 auto;
@@ -446,7 +437,6 @@
     cursor: not-allowed;
   }
 
-  /* ---------- Discord ---------- */
   .discord-card{
     display: flex;
     align-items: center;
@@ -469,7 +459,6 @@
     width: 20px; height: 20px;
   }
 
-  /* ---------- Staff ---------- */
   .staff-grid{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -507,7 +496,6 @@
     color: var(--accent-glow);
   }
 
-  /* ---------- Reveal on scroll ---------- */
   .reveal{
     opacity: 0;
     transform: translateY(18px);
@@ -518,7 +506,6 @@
     transform: translateY(0);
   }
 
-  /* ---------- Footer ---------- */
   footer{
     position: relative;
     z-index: 1;
@@ -572,7 +559,7 @@
       <li><a href="#discord">Discord</a></li>
       <li><a href="#staff">Staff</a></li>
     </ul>
-    <a href="#join" class="nav-cta">mc.arcanesmp.net</a>
+    <a href="#join" class="nav-cta">mc.arcanesmp.com</a>
   </nav>
 </header>
 
@@ -609,12 +596,12 @@
         <h2>Join the Realm</h2>
         <p class="desc">Copy the address into your Minecraft server list and you're in.</p>
         <div class="ip-row">
-          <div class="ip-display" id="ipText">mc.arcanesmp.net</div>
+          <div class="ip-display" id="ipText">mc.arcanesmp.com</div>
           <button class="copy-btn" id="copyBtn">Copy</button>
         </div>
         <div class="meta-row">
           <span><b>Version</b> 1.26.2</span>
-          <span><b>Compatibility</b> ViaVersion enabled</span>
+          <span><b>Compatibility</b> ViaVersion & Geyser</span>
           <span><b>Mode</b> Survival + events</span>
         </div>
       </div>
@@ -662,22 +649,22 @@
       <div class="staff-grid">
         <div class="glass staff-card reveal">
           <div class="staff-avatar">O</div>
-          <h4>Owner Name</h4>
+          <h4>JokerJake72</h4>
           <div class="role">Owner</div>
         </div>
         <div class="glass staff-card reveal">
           <div class="staff-avatar">A</div>
-          <h4>Admin Name</h4>
+          <h4>TheWolfo5959</h4>
           <div class="role">Admin</div>
         </div>
         <div class="glass staff-card reveal">
           <div class="staff-avatar">M</div>
-          <h4>Mod Name</h4>
+          <h4>Agatheine</h4>
           <div class="role">Moderator</div>
         </div>
         <div class="glass staff-card reveal">
           <div class="staff-avatar">B</div>
-          <h4>Builder Name</h4>
+          <h4>MXXTRR_</h4>
           <div class="role">Builder</div>
         </div>
       </div>
@@ -700,7 +687,6 @@
 </footer>
 
 <script>
-  // Copy IP to clipboard
   const copyBtn = document.getElementById('copyBtn');
   const ipText = document.getElementById('ipText');
   copyBtn.addEventListener('click', async () => {
@@ -717,7 +703,6 @@
     }
   });
 
-  // Scroll reveal
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -729,7 +714,6 @@
   }, { threshold: 0.15 });
   revealEls.forEach(el => io.observe(el));
 
-  // Ambient floating runes
   const runeChars = ['ᛝ','ᛟ','ᚱ','ᛞ','◇','✦','ᛗ','ᛒ'];
   const field = document.getElementById('sigilField');
   const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
