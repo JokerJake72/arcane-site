@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arcane SMP — mc.arcanesmp.net</title>
+<meta name="description" content="Arcane SMP — a survival Minecraft world with occasional events. Join at mc.arcanesmp.net.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0614;
+    --bg-alt: #120a24;
+    --panel: rgba(157, 124, 249, 0.07);
+    --panel-border: rgba(196, 181, 253, 0.16);
+    --panel-border-hover: rgba(196, 181, 253, 0.34);
+    --accent: #9d7cf9;
+    --accent-glow: #c9b6ff;
+    --gold: #eec160;
+    --text: #ece7f8;
+    --text-dim: #a79bc7;
+    --text-faint: #7a6f97;
+    --display: 'Cinzel', serif;
+    --body: 'Manrope', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background: radial-gradient(ellipse 120% 80% at 50% -10%, #1c1032 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: var(--body);
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+
+  a{ color: inherit; text-decoration: none; }
+  ul{ list-style:none; }
+  button{ font-family: inherit; cursor: pointer; }
+
+  ::selection{ background: var(--accent); color: #100822; }
+
+  :focus-visible{
+    outline: 2px solid var(--accent-glow);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .wrap{ max-width: 1120px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Ambient background ---------- */
+  .sigil-field{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .rune{
+    position: absolute;
+    color: var(--accent-glow);
+    opacity: 0;
+    font-size: 14px;
+    font-family: var(--mono);
+    animation: rune-drift linear infinite;
+  }
+
+  @keyframes rune-drift{
+    0%{ transform: translateY(10vh) scale(0.8); opacity: 0; }
+    10%{ opacity: 0.35; }
+    90%{ opacity: 0.2; }
+    100%{ transform: translateY(-110vh) scale(1.1); opacity: 0; }
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(10, 6, 20, 0.6);
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  .logo{
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-mark{
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    animation: spin-slow 18s linear infinite;
+  }
+
+  @keyframes spin-slow{ to{ transform: rotate(360deg); } }
+
+  .nav-links{
+    display: flex;
+    gap: 34px;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+  }
+
+  .nav-links a{
+    position: relative;
+    padding: 4px 0;
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover{ color: var(--text); }
+  .nav-links a::after{
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 1px;
+    background: var(--accent-glow);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .nav-links a:hover::after{ transform: scaleX(1); }
+
+  .nav-cta{
+    display: none;
+  }
+
+  @media (min-width: 640px){
+    .nav-cta{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent-glow);
+      border: 1px solid var(--panel-border);
+      padding: 7px 14px;
+      border-radius: 100px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .nav-cta:hover{ border-color: var(--panel-border-hover); background: var(--panel); }
+  }
+
+  .nav-links{ display: none; }
+  @media (min-width: 760px){
+    .nav-links{ display: flex; }
+  }
+
+  /* mobile menu */
+  .menu-btn{
+    display: inline-flex;
+    background: none;
+    border: none;
+    color: var(--text);
+    padding: 6px;
+  }
+  @media (min-width: 760px){ .menu-btn{ display: none; } }
+
+  /* ---------- Section shell ---------- */
+  section{
+    position: relative;
+    z-index: 1;
+    padding: 110px 0 40px;
+  }
+
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-glow);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before{
+    content: '';
+    width: 22px;
+    height: 1px;
+    background: var(--accent-glow);
+    opacity: 0.6;
+  }
+
+  h1, h2, h3{
+    font-family: var(--display);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding-top: 150px;
+    padding-bottom: 90px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-sigil{
+    width: 220px;
+    height: 220px;
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+
+  .hero-sigil svg{ width: 100%; height: 100%; }
+
+  .ring-outer{ animation: spin-slow 40s linear infinite; transform-origin: center; }
+  .ring-inner{ animation: spin-rev 26s linear infinite; transform-origin: center; }
+  @keyframes spin-rev{ to{ transform: rotate(-360deg); } }
+
+  .hero h1{
+    font-size: clamp(40px, 7vw, 74px);
+    line-height: 1.05;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #f4eeff 0%, var(--accent-glow) 60%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-top: -10px;
+    text-shadow: 0 0 60px rgba(157,124,249,0.25);
+  }
+
+  .hero p.sub{
+    max-width: 540px;
+    color: var(--text-dim);
+    font-size: 17px;
+    margin: 22px auto 0;
+  }
+
+  .hero-actions{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 38px;
+  }
+
+  .btn{
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 14.5px;
+    padding: 13px 26px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  }
+  .btn:active{ transform: translateY(1px); }
+
+  .btn-primary{
+    background: linear-gradient(135deg, var(--accent), #7a58e0);
+    color: #0e0720;
+    box-shadow: 0 0 0 rgba(157,124,249,0);
+  }
+  .btn-primary:hover{
+    box-shadow: 0 8px 30px rgba(157,124,249,0.35);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost{
+    background: var(--panel);
+    color: var(--text);
+    border-color: var(--panel-border);
+    backdrop-filter: blur(10px);
+  }
+  .btn-ghost:hover{ border-color: var(--panel-border-hover); }
+
+  /* ---------- Glass panel ---------- */
+  .glass{
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 18px;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .glass:hover{
+    border-color: var(--panel-border-hover);
+    box-shadow: 0 12px 40px rgba(20,10,40,0.4);
+  }
+
+  /* ---------- Join section ---------- */
+  .join-card{
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px;
+    text-align: center;
+  }
+
+  .join-card h2{
+    font-size: 26px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .join-card .desc{
+    color: var(--text-dim);
+    font-size: 14.5px;
+    margin-bottom: 30px;
+  }
+
+  .ip-row{
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .ip-display{
+    font-family: var(--mono);
+    font-size: 20px;
+    letter-spacing: 0.02em;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 14px 22px;
+    color: var(--accent-glow);
+    flex: 1 1 auto;
+    min-width: 220px;
+  }
+
+  .copy-btn{
+    font-family: var(--mono);
+    font-size: 14px;
+    background: var(--accent);
+    color: #0e0720;
+    border: none;
+    border-radius: 10px;
+    padding: 0 20px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .copy-btn:hover{ background: var(--accent-glow); }
+  .copy-btn.copied{ background: var(--gold); }
+
+  .meta-row{
+    display: flex;
+    gap: 22px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 26px;
+    font-size: 13px;
+    color: var(--text-faint);
+  }
+
+  .meta-row span b{
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+
+  .pill{
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 11px;
+    border-radius: 100px;
+    border: 1px solid var(--panel-border);
+    color: var(--text-dim);
+  }
+
+  /* ---------- Grid sections (shop/discord/staff headers) ---------- */
+  .section-head{
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto 48px;
+  }
+  .section-head h2{
+    font-size: clamp(28px, 4vw, 38px);
+    text-transform: uppercase;
+  }
+  .section-head p{
+    color: var(--text-dim);
+    margin-top: 12px;
+    font-size: 15px;
+  }
+
+  /* ---------- Shop ---------- */
+  .shop-card{
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 46px 40px;
+    text-align: center;
+  }
+  .shop-badge{
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(238,193,96,0.35);
+    background: rgba(238,193,96,0.08);
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .shop-card h3{
+    font-size: 22px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .shop-card p{
+    color: var(--text-dim);
+    font-size: 14.5px;
+    margin-bottom: 26px;
+  }
+  .btn-disabled{
+    background: rgba(255,255,255,0.04);
+    color: var(--text-faint);
+    border: 1px solid var(--panel-border);
+    cursor: not-allowed;
+  }
+
+  /* ---------- Discord ---------- */
+  .discord-card{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 44px 46px;
+    flex-wrap: wrap;
+  }
+  .discord-copy h3{
+    font-size: 24px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .discord-copy p{
+    color: var(--text-dim);
+    font-size: 14.5px;
+    max-width: 380px;
+  }
+  .discord-icon{
+    width: 20px; height: 20px;
+  }
+
+  /* ---------- Staff ---------- */
+  .staff-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
+  }
+  .staff-card{
+    padding: 28px 22px;
+    text-align: center;
+  }
+  .staff-avatar{
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--accent-glow), var(--accent) 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 18px;
+    color: #100822;
+  }
+  .staff-card h4{
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .staff-card .role{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-glow);
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--panel-border);
+    padding: 34px 0 40px;
+    margin-top: 60px;
+  }
+  footer .wrap{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 13px;
+  }
+  footer .foot-links{
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  footer .foot-links a:hover{ color: var(--accent-glow); }
+
+  @media (max-width: 640px){
+    .discord-card{ flex-direction: column; text-align: center; justify-content: center; }
+    section{ padding-top: 84px; }
+    .hero{ padding-top: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sigil-field" id="sigilField" aria-hidden="true"></div>
+
+<header>
+  <nav>
+    <a href="#top" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="20,3 35,12 35,28 20,37 5,28 5,12" stroke="#c9b6ff" stroke-width="1.4"/>
+          <circle cx="20" cy="20" r="7" stroke="#eec160" stroke-width="1.2"/>
+        </svg>
+      </span>
+      Arcane SMP
+    </a>
+    <ul class="nav-links">
+      <li><a href="#top">Home</a></li>
+      <li><a href="#join">Join</a></li>
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#discord">Discord</a></li>
+      <li><a href="#staff">Staff</a></li>
+    </ul>
+    <a href="#join" class="nav-cta">mc.arcanesmp.net</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap" style="display:flex; flex-direction:column; align-items:center;">
+      <div class="hero-sigil">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g class="ring-outer">
+            <circle cx="100" cy="100" r="92" stroke="#9d7cf9" stroke-opacity="0.35" stroke-width="1"/>
+            <polygon points="100,10 176,55 176,145 100,190 24,145 24,55" stroke="#9d7cf9" stroke-opacity="0.5" stroke-width="1"/>
+          </g>
+          <g class="ring-inner">
+            <circle cx="100" cy="100" r="58" stroke="#c9b6ff" stroke-opacity="0.55" stroke-width="1"/>
+            <polygon points="100,50 144,76 144,124 100,150 56,124 56,76" stroke="#eec160" stroke-opacity="0.6" stroke-width="1"/>
+          </g>
+          <circle cx="100" cy="100" r="6" fill="#eec160"/>
+        </svg>
+      </div>
+      <div class="eyebrow">Survival · Est. 2026</div>
+      <h1>A World<br>Still Being Written</h1>
+      <p class="sub">Arcane SMP is a survival server for players who like their worlds handmade — long-term builds, real economy, and events when the moon is right.</p>
+      <div class="hero-actions">
+        <a href="#join" class="btn btn-primary">Get the IP</a>
+        <a href="#discord" class="btn btn-ghost">Join the Discord</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="join">
+    <div class="wrap">
+      <div class="glass join-card reveal">
+        <h2>Join the Realm</h2>
+        <p class="desc">Copy the address into your Minecraft server list and you're in.</p>
+        <div class="ip-row">
+          <div class="ip-display" id="ipText">mc.arcanesmp.net</div>
+          <button class="copy-btn" id="copyBtn">Copy</button>
+        </div>
+        <div class="meta-row">
+          <span><b>Version</b> 1.26.2</span>
+          <span><b>Compatibility</b> ViaVersion enabled</span>
+          <span><b>Mode</b> Survival + events</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shop">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" style="justify-content:center;">Support the server</div>
+        <h2>Shop</h2>
+      </div>
+      <div class="glass shop-card reveal">
+        <span class="shop-badge">Coming Soon</span>
+        <h3>Ranks &amp; Cosmetics</h3>
+        <p>We're still enchanting this one. Ranks, cosmetics, and perks will appear here soon — check back or watch Discord for the announcement.</p>
+        <button class="btn btn-disabled" disabled>Not Yet Available</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="discord">
+    <div class="wrap">
+      <div class="glass discord-card reveal">
+        <div class="discord-copy">
+          <div class="eyebrow">The community</div>
+          <h3>Talk with the realm</h3>
+          <p>Trade, plan builds, get event announcements, and reach staff — all on Discord.</p>
+        </div>
+        <a href="https://discord.gg/4GZHwR3pQn" class="btn btn-primary" target="_blank" rel="noopener">
+          <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.369A19.79 19.79 0 0 0 16.558 3c-.211.375-.436.884-.6 1.288a18.27 18.27 0 0 0-5.914 0A12.6 12.6 0 0 0 9.442 3a19.74 19.74 0 0 0-3.76 1.37C2.8 8.24 2.02 12 2.397 15.71a19.9 19.9 0 0 0 5.993 3.03c.484-.66.916-1.363 1.288-2.102a12.9 12.9 0 0 1-2.03-.975c.17-.124.336-.253.497-.386 3.916 1.81 8.157 1.81 12.026 0 .163.134.33.263.497.386-.646.386-1.323.71-2.03.976.372.738.804 1.44 1.288 2.101a19.86 19.86 0 0 0 6-3.03c.5-4.31-.593-8.037-2.61-11.34ZM9.7 13.42c-1.176 0-2.14-1.08-2.14-2.41 0-1.328.943-2.41 2.14-2.41 1.208 0 2.16 1.093 2.14 2.41 0 1.33-.943 2.41-2.14 2.41Zm6.6 0c-1.176 0-2.14-1.08-2.14-2.41 0-1.328.943-2.41 2.14-2.41 1.208 0 2.16 1.093 2.14 2.41 0 1.33-.932 2.41-2.14 2.41Z"/></svg>
+          Join Discord
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="staff">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow" style="justify-content:center;">Who keeps the lights on</div>
+        <h2>Staff</h2>
+        <p>Edit this section with your real team — names, roles, and as many as you need.</p>
+      </div>
+      <div class="staff-grid">
+        <div class="glass staff-card reveal">
+          <div class="staff-avatar">O</div>
+          <h4>Owner Name</h4>
+          <div class="role">Owner</div>
+        </div>
+        <div class="glass staff-card reveal">
+          <div class="staff-avatar">A</div>
+          <h4>Admin Name</h4>
+          <div class="role">Admin</div>
+        </div>
+        <div class="glass staff-card reveal">
+          <div class="staff-avatar">M</div>
+          <h4>Mod Name</h4>
+          <div class="role">Moderator</div>
+        </div>
+        <div class="glass staff-card reveal">
+          <div class="staff-avatar">B</div>
+          <h4>Builder Name</h4>
+          <div class="role">Builder</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="#top">Home</a>
+      <a href="#join">Join</a>
+      <a href="#shop">Shop</a>
+      <a href="#discord">Discord</a>
+      <a href="#staff">Staff</a>
+    </div>
+    <div>&copy; 2026 Arcane SMP. Not affiliated with Mojang or Microsoft.</div>
+  </div>
+</footer>
+
+<script>
+  // Copy IP to clipboard
+  const copyBtn = document.getElementById('copyBtn');
+  const ipText = document.getElementById('ipText');
+  copyBtn.addEventListener('click', async () => {
+    try{
+      await navigator.clipboard.writeText(ipText.textContent.trim());
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('copied');
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy';
+        copyBtn.classList.remove('copied');
+      }, 1800);
+    }catch(e){
+      copyBtn.textContent = 'Select & Copy';
+    }
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Ambient floating runes
+  const runeChars = ['ᛝ','ᛟ','ᚱ','ᛞ','◇','✦','ᛗ','ᛒ'];
+  const field = document.getElementById('sigilField');
+  const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!isReducedMotion){
+    const count = window.innerWidth < 640 ? 10 : 18;
+    for(let i = 0; i < count; i++){
+      const el = document.createElement('span');
+      el.className = 'rune';
+      el.textContent = runeChars[Math.floor(Math.random() * runeChars.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (18 + Math.random() * 22) + 's';
+      el.style.animationDelay = (Math.random() * 20) + 's';
+      el.style.fontSize = (10 + Math.random() * 10) + 'px';
+      field.appendChild(el);
+    }
+  }
+</script>
+
+</body>
+</html>
