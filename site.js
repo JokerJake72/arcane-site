@@ -1,8 +1,8 @@
 const copyBtn = document.getElementById('copyBtn');
 const ipText = document.getElementById('ipText');
-if(copyBtn && ipText){
+if (copyBtn && ipText) {
   copyBtn.addEventListener('click', async () => {
-    try{
+    try {
       await navigator.clipboard.writeText(ipText.textContent.trim());
       copyBtn.textContent = 'Copied!';
       copyBtn.classList.add('copied');
@@ -10,16 +10,16 @@ if(copyBtn && ipText){
         copyBtn.textContent = 'Copy';
         copyBtn.classList.remove('copied');
       }, 1800);
-    }catch(e){
+    } catch (e) {
       copyBtn.textContent = 'Select & Copy';
     }
   });
 }
 const field = document.getElementById('sigilField');
-if(field && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-  const runeChars = ['*','+','o','x','<>','^','~','/'];
+if (field && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const runeChars = ['*', '+', 'o', 'x', '<>', '^', '~', '/'];
   const count = window.innerWidth < 640 ? 10 : 18;
-  for(let index = 0; index < count; index++){
+  for (let index = 0; index < count; index++) {
     const rune = document.createElement('span');
     rune.className = 'rune';
     rune.textContent = runeChars[Math.floor(Math.random() * runeChars.length)];
