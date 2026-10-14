@@ -367,14 +367,14 @@ h3 {
     max-width: 520px
 }
 
-.shop-card {
+.gems-card {
     max-width: 640px;
     margin: 0 auto;
     padding: 42px;
     text-align: center
 }
 
-.shop-badge {
+.gems-badge {
     display: inline-block;
     color: var(--gold);
     font-family: var(--mono);
@@ -387,11 +387,11 @@ h3 {
     margin-bottom: 20px
 }
 
-.shop-card h3 {
+.gems-card h3 {
     font-size: 27px
 }
 
-.shop-card p,
+.gems-card p,
 .discord-copy p {
     color: var(--text-dim);
     font-size: 14.5px;
@@ -533,7 +533,7 @@ footer .foot-links a:hover {
     }
 
     .join-card,
-    .shop-card,
+    .gems-card,
     .discord-card {
         padding: 28px 22px
     }
