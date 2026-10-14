@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gem Codex | Arcane SMP</title>
+    <meta name="description" content="Explore the abilities and passives of every BlissGems gem on Arcane SMP.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .codex-intro {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text-dim);
+            font-size: 14.5px
+        }
+
+        .codex-intro a {
+            color: var(--accent-glow);
+            text-decoration: underline;
+            text-underline-offset: 3px
+        }
+
+        .gem-section {
+            padding-top: 45px
+        }
+
+        .gem-section+.gem-section {
+            padding-top: 75px
+        }
+
+        .gem-section-head {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 22px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--panel-border)
+        }
+
+        .gem-section-head h2 {
+            font-size: 28px;
+            text-transform: uppercase
+        }
+
+        .gem-section-head p {
+            max-width: 480px;
+            color: var(--text-dim);
+            font-size: 13px
+        }
+
+        .gem-count {
+            font: 11px var(--mono);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            white-space: nowrap
+        }
+
+        .gem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px
+        }
+
+        .gem-entry {
+            align-self: start;
+            overflow: hidden;
+            border-radius: 10px;
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            transition: border-color .2s ease, background .2s ease
+        }
+
+        .gem-entry:hover,
+        .gem-entry[open] {
+            border-color: var(--panel-border-hover);
+            background: rgba(157, 124, 249, .1)
+        }
+
+        .gem-entry summary {
+            min-height: 58px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            cursor: pointer;
+            list-style: none;
+            font-family: var(--display);
+            font-size: 16px;
+            font-weight: 600
+        }
+
+        .gem-entry summary::-webkit-details-marker {
+            display: none
+        }
+
+        .gem-entry summary::after {
+            content: '+';
+            flex: none;
+            color: var(--gold);
+            font: 20px var(--mono)
+        }
+
+        .gem-entry[open] summary::after {
+            content: '−'
+        }
+
+        .gem-content {
+            padding: 0 18px 18px;
+            border-top: 1px solid var(--panel-border);
+            color: var(--text-dim);
+            font-size: 13px
+        }
+
+        .gem-content p {
+            margin-top: 13px
+        }
+
+        .gem-content strong {
+            color: var(--accent-glow);
+            font-weight: 700
+        }
+
+        .gem-content ul {
+            margin: 7px 0 0 17px;
+            list-style: disc
+        }
+
+        .gem-content li {
+            padding: 2px 0
+        }
+
+        .gem-content li::marker {
+            color: var(--gold)
+        }
+
+        .codex-note {
+            margin-top: 24px;
+            padding: 15px 18px;
+            border-left: 2px solid var(--gold);
+            background: rgba(238, 193, 96, .05);
+            color: var(--text-dim);
+            font-size: 12px
+        }
+
+        .codex-note strong {
+            color: var(--gold)
+        }
+
+        @media(max-width:640px) {
+            .gem-grid {
+                grid-template-columns: 1fr
+            }
+
+            .gem-section-head {
+                align-items: start;
+                flex-direction: column;
+                gap: 5px
+            }
+
+            .gem-section-head h2 {
+                font-size: 24px
+            }
+
+            .gem-entry summary {
+                min-height: 54px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sigil-field" id="sigilField" aria-hidden="true"></div>
+    <header>
+        <nav>
+            <a href="index.html" class="logo"><span class="logo-mark"><svg viewBox="0 0 40 40" fill="none"
+                        aria-hidden="true">
+                        <polygon points="20,3 35,12 35,28 20,37 5,28 5,12" stroke="#c9b6ff" stroke-width="1.4" />
+                        <circle cx="20" cy="20" r="7" stroke="#eec160" stroke-width="1.2" />
+                    </svg></span>Arcane SMP</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="join.html">Join</a></li>
+                <li><a href="gems.html">Shop</a></li>
+                <li><a href="discord.html">Discord</a></li>
+                <li><a href="staff.html">Staff</a></li>
+            </ul>
+            <a href="join.html" class="nav-cta">mc.arcanesmp.com</a>
+        </nav>
+    </header>
+    <main>
+        <section class="page-hero">
+            <div class="wrap">
+                <div class="eyebrow" style="justify-content:center;">The Arcane SMP reference</div>
+                <h1>Gem Codex</h1>
+                <p class="codex-intro">Discover the powers waiting inside every gem. Select an entry to explore its
+                    abilities and passive effects. Details are based on the <a
+                        href="https://modrinth.com/plugin/bliss-smp-plugin" target="_blank"
+                        rel="noopener noreferrer">BlissGems</a> and <a
+                        href="https://modrinth.com/plugin/blissgems-expansion" target="_blank"
+                        rel="noopener noreferrer">BlissGems Expansion</a> references.</p>
+            </div>
+        </section>
+
+        <section class="gem-section">
+            <div class="wrap">
+                <div class="gem-section-head">
+                    <div>
+                        <div class="eyebrow">The original collection</div>
+                        <h2>BlissGems</h2>
+                    </div>
+                    <span class="gem-count">8 gems</span>
+                </div>
+                <div class="gem-grid">
+                    <details class="gem-entry">
+                        <summary>Astra Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Astral Daggers:</strong> Fire three phantom daggers in a spread, dealing
+                                    damage at range.</li>
+                                <li><strong>Astral Projection (Tier 2):</strong> Leave your body in spectator form for
+                                    five seconds; tag players or spook nearby foes while projected.</li>
+                                <li><strong>Dimensional Drift (Tier 2):</strong> Ride an invisible mount with a subtle
+                                    astral trail.</li>
+                                <li><strong>Dimensional Void (Tier 2):</strong> Suppress nearby enemy gem abilities and
+                                    weaken them.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Chance to negate incoming damage, heal from kills, and
+                                capture/release souls.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Fire Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Charged Fireball:</strong> Charge and launch an explosive fireball; damage
+                                    and blast size scale with charge.</li>
+                                <li><strong>Cozy Campfire (Tier 2):</strong> A healing fire for allies that burns nearby
+                                    enemies.</li>
+                                <li><strong>Crisp (Tier 2):</strong> Evaporate water and convert nearby terrain to
+                                    Nether blocks.</li>
+                                <li><strong>Meteor Shower (Tier 2):</strong> Call burning meteors down over a distant
+                                    target area.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Fire Resistance and automatic ore smelting. Tier 2 adds Flame
+                                and Fire Aspect II.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Flux Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Flux Beam:</strong> Charge and fire a long-range beam that damages armor;
+                                    trusted players' armor is repaired instead.</li>
+                                <li><strong>Ground (Tier 2):</strong> Stun a targeted foe at range.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Cleanse Weakness, Slowness, and Hunger; arrows shock targets.
+                                Flow State rewards repeated actions with speed.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Life Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Heart Drainer:</strong> Apply Wither II to a targeted entity.</li>
+                                <li><strong>Circle of Life (Tier 2):</strong> Create an area that regenerates you and
+                                    withers enemies.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Regeneration, extra damage to undead, increased saturation from
+                                food, and stronger golden-apple absorption.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Puff Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Dash:</strong> Burst forward in the direction you face.</li>
+                                <li><strong>Breezy Bash (Tier 2):</strong> Launch upward and gain temporary fall
+                                    immunity.</li>
+                            </ul>
+                            <p><strong>Passives</strong> No fall damage, a mid-air double jump, and a launch effect on
+                                hit. Tier 2 also prevents sculk sensors and shriekers from triggering.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Speed Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Sloth's Sedative:</strong> Slow and fatigue nearby enemies.</li>
+                                <li><strong>Speed Storm (Tier 2):</strong> Gain a powerful burst of Speed.</li>
+                                <li><strong>Adrenaline Rush (Tier 2):</strong> Enter a short combat state with
+                                    energy-scaled speed and faster attacks.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Speed and Dolphin's Grace; Tier 2 strengthens the speed effect.
+                                Tier 2 adds Efficiency V to tools.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Strength Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Bloodthorns:</strong> Damage nearby foes, with greater power at higher
+                                    health.</li>
+                                <li><strong>Frailer Power (Tier 2):</strong> Weaken and wither a targeted player.</li>
+                                <li><strong>Chad Strength (Tier 2):</strong> Gain Strength II and Resistance II
+                                    temporarily.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Strength and charged critical-hit tracking. Tier 2 adds
+                                Sharpness V to swords and axes.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Wealth Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Durability Chip:</strong> Toggle double durability damage dealt by your
+                                    tools.</li>
+                                <li><strong>Rich Rush (Tier 2):</strong> Gain Haste III and Luck IV for mining and
+                                    farming.</li>
+                                <li><strong>Tier 2 utilities:</strong> Open personal pockets, amplify active potion
+                                    effects, or toggle auto-smelting.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Luck and Hero of the Village; target players can be afflicted
+                                with Unluck. Tier 2 adds Fortune III, Looting III, and Mending.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <section class="gem-section">
+            <div class="wrap">
+                <div class="gem-section-head">
+                    <div>
+                        <div class="eyebrow">Thirty-three new powers</div>
+                        <h2>BlissGems Expansion</h2>
+                    </div>
+                    <span class="gem-count">33 gems</span>
+                </div>
+                <div class="gem-grid">
+                    <details class="gem-entry">
+                        <summary>Frost Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Ice Wall (15s):</strong> Raise a temporary 5×3 packed-ice wall.</li>
+                                <li><strong>Frost Nova (30s):</strong> Damage and freeze enemies in a 6-block ring.</li>
+                                <li><strong>Blizzard (60s):</strong> A snow tornado damages and encases nearby foes.
+                                </li>
+                                <li><strong>Avalanche (40s):</strong> Five shockwaves launch, freeze, and damage
+                                    enemies.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Chilling Touch frosts water underfoot; Tier 2 grants Fire
+                                Resistance.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Terra Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Earthquake (15s):</strong> Send erupting terrain forward to launch and slow
+                                    foes.</li>
+                                <li><strong>Stone Skin (30s):</strong> Gain Resistance III, with Slowness II.</li>
+                                <li><strong>Rock Shield (45s):</strong> Orbiting boulders damage and knock back
+                                    attackers.</li>
+                                <li><strong>Meteor (50s):</strong> Strike a target area with an igniting magma meteor.
+                                </li>
+                            </ul>
+                            <p><strong>Passives</strong> Slow Falling; Tier 2 reveals nearby creature footsteps while
+                                grounded.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Aqua Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Tsunami (15s):</strong> Push enemies back with a forward-rushing wave.</li>
+                                <li><strong>Riptide (8s):</strong> Propel yourself forward, damaging what you pass
+                                    through.</li>
+                                <li><strong>Drown (30s):</strong> Trap a targeted entity with Slowness, Blindness, and
+                                    Poison.</li>
+                                <li><strong>Whirlpool (45s):</strong> Pull nearby entities inward with a vortex.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Water Breathing; Speed and Strength in water or rain; Tier 2
+                                grants Dolphin's Grace.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Toxic Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Acid Geyser (15s):</strong> Leave a poisonous, slowing acid pool where a
+                                    bolt lands.</li>
+                                <li><strong>Toxic Tornado (30s):</strong> A growing venom tornado inflicts Weakness,
+                                    Blindness, and Levitation.</li>
+                                <li><strong>Vampiric Swarm (20s):</strong> Hunting bats damage your target and heal you.
+                                </li>
+                                <li><strong>Pandemic (45s):</strong> Spread Wither, Poison, and Nausea across a wide
+                                    area.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Poison and Nausea immunity; Tier 2 poisons melee attackers.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Illusion Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Shadow Clones (30s):</strong> Exploding clones hunt nearby enemies.</li>
+                                <li><strong>Switch (20s):</strong> Swap places with a target and leave them disoriented.
+                                </li>
+                                <li><strong>Dark Room (30s):</strong> Blind and slow nearby foes with Darkness.</li>
+                                <li><strong>Paranoia (45s):</strong> Blind a target amid phantom sounds and souls.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Invisibility; Tier 2 grants Night Vision.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Mecha Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Evoker Fangs (15s):</strong> Send rings of fangs erupting outward.</li>
+                                <li><strong>Turret (30s):</strong> Deploy an arrow-firing turret.</li>
+                                <li><strong>EMP (45s):</strong> Expand a dome that damages, blinds, and slows.</li>
+                                <li><strong>Block Golem (90s):</strong> Assemble a powerful combat construct.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Haste II; Tier 2 grants Resistance I.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Chrono Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Rewind (30s):</strong> Return along your recorded 5-second trail, restoring
+                                    the health you had then.</li>
+                                <li><strong>Stasis (30s):</strong> Freeze your targeted foe in place.</li>
+                                <li><strong>Time Dilation (45s):</strong> Speed yourself up and slow enemies in a
+                                    temporal field.</li>
+                                <li><strong>Echo (60s):</strong> Replay your recent path as an attacking copy.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Haste; Tier 2 grants Regeneration.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Gravity Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Crush (15s):</strong> Slam and pin a targeted foe.</li>
+                                <li><strong>Levitate (30s):</strong> Lift an enemy before dropping them.</li>
+                                <li><strong>Singularity (45s):</strong> Pull nearby entities inward, then collapse for
+                                    damage.</li>
+                                <li><strong>Inversion (60s):</strong> Suspend everyone in a wide dome before gravity
+                                    returns.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Jump Boost II; Tier 2 slows entities close to you.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Storm Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Chain Lightning (15s):</strong> Arc a bolt between up to five foes.</li>
+                                <li><strong>Static Field (30s):</strong> A charged ring follows you, granting Speed and
+                                    shocking enemies.</li>
+                                <li><strong>Downburst (45s):</strong> Blast nearby enemies into the air, then send out a
+                                    ground shockwave.</li>
+                                <li><strong>Thunderdome (60s):</strong> A storm strikes random foes inside its dome.
+                                </li>
+                            </ul>
+                            <p><strong>Passives</strong> Speed; Tier 2 grants Strength during rain or storms.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Sonic Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Sonic Boom (15s):</strong> Blast a cone of piercing damage and knockback.
+                                </li>
+                                <li><strong>Echolocation (30s):</strong> Reveal nearby living things through walls,
+                                    visible only to you.</li>
+                                <li><strong>Deafen (30s):</strong> Blind and disorient a targeted foe.</li>
+                                <li><strong>Resonance (60s):</strong> Deliver four pulses of piercing sonic damage.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Nearby mobs lose interest in you; Tier 2 senses living things
+                                through walls.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Wood Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Vine Grapple (10s):</strong> Swing to a block or pull a foe toward you.</li>
+                                <li><strong>Bark Armor (30s):</strong> Gain Absorption and Resistance with orbiting bark
+                                    plates.</li>
+                                <li><strong>Grasping Roots (40s):</strong> Root and damage nearby enemies.</li>
+                                <li><strong>Seed Bomb (55s):</strong> Grow an oak that launches nearby foes.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Regeneration in open daylight; Tier 2 grants Saturation.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Spirit Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Soul Tether (14s):</strong> Chain a foe to you and yank them back if they
+                                    stray.</li>
+                                <li><strong>Guardian Orb (30s):</strong> A spirit orb intercepts incoming projectiles.
+                                </li>
+                                <li><strong>Spirit Pack (45s):</strong> Summon spirit wolves to hunt nearby foes.</li>
+                                <li><strong>Possession (60s):</strong> Control a targeted mob temporarily; players
+                                    cannot be possessed.</li>
+                            </ul>
+                            <p><strong>Passives</strong> See nearby players' health; Tier 2 grants Slow Falling.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Light Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Ricochet Beam (14s):</strong> Bounce a damaging beam off walls between foes.
+                                </li>
+                                <li><strong>Flashbang (28s):</strong> Blind foes who can see a thrown flash.</li>
+                                <li><strong>Light Bridge (30s):</strong> Build a temporary bridge of solid light.</li>
+                                <li><strong>Judgment (60s):</strong> Strike nearby foes with pillars of light.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Speed in open daylight; Tier 2 resists Blindness and Darkness
+                                and reveals invisible foes.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Windy Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Gust (12s):</strong> Blast foes and blow away nearby projectiles and items.
+                                </li>
+                                <li><strong>Wind Wall (28s):</strong> Turn incoming projectiles around and push back
+                                    foes.</li>
+                                <li><strong>Tornado (45s):</strong> A guided tornado spins up foes and loose items.</li>
+                                <li><strong>Gale Force (60s):</strong> Launch nearby foes skyward and slam them down.
+                                </li>
+                            </ul>
+                            <p><strong>Passives</strong> Speed; Tier 2 prevents fall damage and enables a double jump.
+                            </p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Metal Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Disarm (18s):</strong> Knock a metal weapon from a targeted player's hand.
+                                </li>
+                                <li><strong>Reflective Plating (30s):</strong> Gain Resistance and reflect melee damage.
+                                </li>
+                                <li><strong>Iron Maiden (40s):</strong> Trap a target in damaging iron bars.</li>
+                                <li><strong>Heat Metal (60s):</strong> Burn nearby foes wearing metal armor.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Resistance; Tier 2 grants Strength.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Death Gem <span class="gem-count">Mythic</span></summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Reaper's Scythe (20s):</strong> Sweep foes with Wither; low-health targets
+                                    take extra damage.</li>
+                                <li><strong>Death Mark (35s):</strong> Mark a foe to make them glow and take increased
+                                    damage.</li>
+                                <li><strong>Raise Dead (50s):</strong> Summon skeletons to fight for you.</li>
+                                <li><strong>Life Ledger (70s):</strong> Return damage taken during the effect to your
+                                    attackers.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Heal on kills; Tier 2 grants Strength.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Sun Gem <span class="gem-count">Legendary</span></summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Solar Flare (18s):</strong> Fire a piercing beam that burns foes and
+                                    transforms the impact terrain.</li>
+                                <li><strong>High Noon (40s):</strong> Pull distant foes into blazing sunlight and weaken
+                                    them.</li>
+                                <li><strong>Corona (55s):</strong> Surround yourself with a damaging aura and gain Fire
+                                    Resistance.</li>
+                                <li><strong>Supernova (180s):</strong> Guide a miniature sun that detonates on impact.
+                                </li>
+                            </ul>
+                            <p><strong>Passives</strong> Fire Resistance; Tier 2 stores solar charge for stronger solar
+                                abilities.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Diamond Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Diamond Shards (12s):</strong> Fire a fan of damaging diamond projectiles.
+                                </li>
+                                <li><strong>Crystal Wall (28s):</strong> Raise a temporary crystal wall.</li>
+                                <li><strong>Crystal Cage (35s):</strong> Trap a targeted foe in a breakable cage.</li>
+                                <li><strong>Shatter (45s):</strong> Explode your standing crystal walls and cages.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Haste; Tier 2 reveals nearby ores through walls.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Ink Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Ink Splash (10s):</strong> Spray a cone of ink that damages and blinds.</li>
+                                <li><strong>Ink Bomb (22s):</strong> Throw an ink bomb that bursts into a blinding pool.
+                                </li>
+                                <li><strong>Ink Flood (40s):</strong> Send a damaging wave of ink along ground and
+                                    walls.</li>
+                                <li><strong>Blot (55s):</strong> Splatter nearby players' screens and ink the ground
+                                    beneath them.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Gain Speed on your ink while foes are slowed; Tier 2 lets you
+                                vanish into it and climb inked walls.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Glass Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Glass Shards (12s):</strong> Blast a cone of sharp, withering shards.</li>
+                                <li><strong>X-Ray Window (30s):</strong> Temporarily see through blocks in a cone.</li>
+                                <li><strong>Glass Floor (35s):</strong> Drop a target through a temporary glass floor.
+                                </li>
+                                <li><strong>Mirror Clone (50s):</strong> Create a mirrored copy that retaliates when
+                                    struck.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Night Vision; Tier 2 grants Invisibility while sneaking.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Thermo Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Thermal Shock (14s):</strong> Burn then freeze a target to trigger thermal
+                                    shock.</li>
+                                <li><strong>Overheat (24s):</strong> Burn nearby foes and melt ice and snow.</li>
+                                <li><strong>Deep Freeze (32s):</strong> Freeze and slow nearby foes; freeze water and
+                                    solidify lava.</li>
+                                <li><strong>Thermal Collapse (60s):</strong> Pulse a dome between heat and cold to build
+                                    thermal shock.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Fire Resistance; Tier 2 prevents freezing. Terrain effects are
+                                temporary.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Powder Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Sticky Bomb (14s):</strong> Pass a sticky explosive between players before
+                                    it detonates.</li>
+                                <li><strong>Remote Charges (25s):</strong> Plant up to three charges, then detonate
+                                    them.</li>
+                                <li><strong>Rocket Jump (12s):</strong> Blast yourself forward and upward without
+                                    self-damage.</li>
+                                <li><strong>Breach (45s):</strong> Blow a temporary hole through a wall.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Take half explosion damage; Tier 2 grants explosion immunity.
+                                Explosions do not break blocks except temporary Breach changes.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Desert Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Sand Blast (12s):</strong> Damage and blind foes with a cone of sand.</li>
+                                <li><strong>Bury (30s):</strong> Trap a target in sandstone.</li>
+                                <li><strong>Mirage (40s):</strong> Confuse nearby players with illusions only they see.
+                                </li>
+                                <li><strong>Sandstorm (60s):</strong> Surround yourself with a damaging, blinding storm.
+                                </li>
+                            </ul>
+                            <p><strong>Passives</strong> Fire Resistance; Tier 2 grants Speed on sand, red sand, and
+                                sandstone.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Techno Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Laser (12s):</strong> Fire a piercing long-range laser.</li>
+                                <li><strong>Jammer (30s):</strong> Disable nearby target players' mobility items and
+                                    knock gliding foes from the sky.</li>
+                                <li><strong>Teleport Pads (40s):</strong> Link two temporary pads for you and trusted
+                                    players.</li>
+                                <li><strong>Orbital Strike (75s):</strong> Mark a distant location for a delayed orbital
+                                    blast.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Haste; Tier 2 grants Night Vision.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Bubble Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Bubble Trap (14s):</strong> Float a foe upward in a breakable bubble.</li>
+                                <li><strong>Bubble Steps (25s):</strong> Create a temporary staircase of bubbles.</li>
+                                <li><strong>Bubble Armor (30s):</strong> Reflect projectiles and absorb the first melee
+                                    strike.</li>
+                                <li><strong>Bubble Prison (60s):</strong> Lift nearby foes, then pop their bubbles for
+                                    damage.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Slow Falling; Tier 2 grants Dolphin's Grace.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>ERROR Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Rubberband (14s):</strong> Snap a target back to a marked spot and damage
+                                    them.</li>
+                                <li><strong>Inventory Scramble (35s):</strong> Shuffle nearby players' hotbars without
+                                    losing items.</li>
+                                <li><strong>Fake World (40s):</strong> Show nearby foes a glitched, false landscape.
+                                </li>
+                                <li><strong>System Crash (75s):</strong> Disorient, blind, and damage nearby enemies.
+                                </li>
+                            </ul>
+                            <p><strong>Passives</strong> Speed; Tier 2 grants a chance to dodge hits.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Shadow Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Shadow Step (10s):</strong> Teleport to a visible dark block and damage
+                                    nearby foes.</li>
+                                <li><strong>Steal Shadow (30s):</strong> Make a target's shadow repeatedly strike them.
+                                </li>
+                                <li><strong>Blackout (40s):</strong> Extinguish lights on nearby foes' screens and
+                                    inflict Darkness.</li>
+                                <li><strong>Colorless (55s):</strong> Steal nearby foes' positive potion effects.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Invisibility while standing in darkness; Tier 2 grants Night
+                                Vision.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Plasma Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Charged Shot (10s):</strong> Charge a shot for increased damage and
+                                    wall-piercing power.</li>
+                                <li><strong>Plasma Whip (18s):</strong> Damage foes in a cone and pull them toward you.
+                                </li>
+                                <li><strong>Arc (30s):</strong> Shock a target; conductive surfaces can amplify and
+                                    spread the strike.</li>
+                                <li><strong>Plasma Cannon (70s):</strong> Fire a piercing beam that tunnels through
+                                    temporary terrain.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Speed; Tier 2 grants Fire Resistance.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Flesh Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Tentacle (15s):</strong> Hold a target close and deal damage over time.</li>
+                                <li><strong>Regrowth (30s):</strong> Heal instantly, then regenerate.</li>
+                                <li><strong>Parasite (35s):</strong> Drain a target to heal yourself; the parasite can
+                                    jump to other foes.</li>
+                                <li><strong>Disguise (60s):</strong> Disappear behind a decoy mob; taking a hit still
+                                    harms you.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Regeneration; Tier 2 heals you when you land melee hits.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Magnet Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Magnetic Pull (12s):</strong> Yank a distant target toward you.</li>
+                                <li><strong>Arrow Catch (25s):</strong> Catch nearby projectiles and redirect them.</li>
+                                <li><strong>Polarity (40s):</strong> Pull two foes together, or pull a lone foe to you.
+                                </li>
+                                <li><strong>Scrap Storm (60s):</strong> Launch orbiting scrap at nearby enemies.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Nearby dropped items drift toward you; Tier 2 can deflect
+                                projectiles.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Gas Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Gas Cloud (15s):</strong> Fill nearby open space with poisonous gas.</li>
+                                <li><strong>Nerve Gas (30s):</strong> Spray a cone that slows and disorients foes.</li>
+                                <li><strong>Toxic Trail (40s):</strong> Leave poisonous gas behind as you move.</li>
+                                <li><strong>Chemical Bomb (70s):</strong> Flood a large area with potent gas; flames can
+                                    ignite a cloud.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Poison immunity; Tier 2 poisons nearby foes.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Ghost Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Poltergeist (18s):</strong> Haunt a target with slamming doors, flickering
+                                    vision, and a chance to drop their held item.</li>
+                                <li><strong>Phantom Rush (25s):</strong> Rush through foes while invisible, damaging and
+                                    slowing them.</li>
+                                <li><strong>Wail (40s):</strong> Damage, weaken, and knock back nearby foes.</li>
+                                <li><strong>Astral Projection (90s):</strong> Leave your body and roam as a spirit
+                                    before returning.</li>
+                            </ul>
+                            <p><strong>Passives</strong> Phase through thin walls while sneaking; Tier 2 grants Night
+                                Vision.</p>
+                        </div>
+                    </details>
+                    <details class="gem-entry">
+                        <summary>Phoenix Gem</summary>
+                        <div class="gem-content">
+                            <p><strong>Abilities</strong></p>
+                            <ul>
+                                <li><strong>Phoenix Fire (15s):</strong> Burn foes with a cone of flame.</li>
+                                <li><strong>Wings of Fire (30s):</strong> Glide through the air and scorch foes you
+                                    pass.</li>
+                                <li><strong>Phoenix Egg (60s):</strong> Plant an egg that can revive you if you die
+                                    nearby.</li>
+                                <li><strong>Inferno Ascension (75s):</strong> Rise, then crash down in a fiery blast.
+                                </li>
+                            </ul>
+                            <p><strong>Passives</strong> Fire Resistance; Tier 2 can prevent a killing blow once every
+                                ten minutes.</p>
+                        </div>
+                    </details>
+                </div>
+                <p class="codex-note"><strong>Tier note</strong> BlissGems Expansion gems unlock their first ability and
+                    passive at Tier 1; upgrading to Tier 2 unlocks the remaining abilities and second passive. Expansion
+                    requires BlissGems 5.0.0+ and its resource pack.</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="wrap">
+            <div class="foot-links"><a href="index.html">Home</a><a href="join.html">Join</a><a
+                    href="shop.html">Shop</a><a href="discord.html">Discord</a><a href="staff.html">Staff</a></div>
+            <div>&copy; 2026 Arcane SMP. Not affiliated with Mojang or Microsoft.</div>
+        </div>
+    </footer>
+    <script src="site.js"></script>
+</body>
+
+</html>
